@@ -5,25 +5,15 @@ public class bai5 {
         Scanner sc = new Scanner(System.in);
         System.out.print("nhập vào 1 chuỗi ký tự: ");
         String text = sc.nextLine();
-        // phân chia chuỗi text dựa trên dấu cách " ".
-        String[] words = text.split(" ");
+        // Phân chia chuỗi thành các từ dựa trên khoảng trắng
+        String[] words = text.split("\\s+");
+
         int count = 0;
         System.out.println("Các từ chứa ký tự đặc biệt:");
 
+        // Kiểm tra từng từ xem có ký tự đặc biệt không
         for (String word : words) {
-            boolean hasSpecialChar = false;
-            // word.toCharArray() chuyển từ (word) thành một mảng ký tự (char[]),
-            // giúp duyệt từng ký tự riêng lẻ.
-            for (char c : word.toCharArray()) {
-                //Character.isLetterOrDigit(c) kiểm tra xem ký tự c có phải
-                // là chữ cái (A-Z, a-z) hoặc chữ số (0-9) không.
-                if (!Character.isLetterOrDigit(c)) {
-                    hasSpecialChar = true;
-                    break;
-                }
-            }
-
-            if (hasSpecialChar) {
+            if (word.matches(".*[^a-zA-Z0-9].*")) { // Regex kiểm tra ký tự đặc biệt
                 System.out.println(word);
                 count++;
             }

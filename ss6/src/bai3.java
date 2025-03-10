@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class bai3 {
     public static void main(String[] args) {
@@ -7,31 +9,12 @@ public class bai3 {
         String chain = sc.nextLine();
         System.out.println("nhập vào ký tự x cần tìm: ");
         String x = sc.nextLine().trim();
-        //isEmpty() là một phương thức của lớp String trong Java.
-        //Kiểm tra xem chuỗi có rỗng hay không.
-        //Trả về true nếu chuỗi có độ dài bằng 0, ngược lại trả về false.
-        if (x.isEmpty() || x.length() > chain.length()) {
-            System.out.println("Từ cần tìm không hợp lệ hoặc quá dài.");
-            return;
-        }
+        // Sử dụng regex để tìm vị trí đầu tiên
+        Pattern pattern = Pattern.compile(Pattern.quote(x)); // Chuyển chuỗi x thành biểu thức chính quy an toàn
+        Matcher matcher = pattern.matcher(chain);
 
-        int position = -1;
-        for (int i = 0; i <= chain.length() - x.length(); i++) {
-            boolean found = true;
-            for (int j = 0; j < x.length(); j++) {
-                if (chain.charAt(i + j) != x.charAt(j)) {
-                    found = false;
-                    break;
-                }
-            }
-            if (found) {
-                position = i;
-                break;
-            }
-        }
-
-        if (position != -1) {
-            System.out.println("Vị trí đầu tiên của từ trong chuỗi: " + position);
+        if (matcher.find()) {
+            System.out.println("Vị trí đầu tiên của từ trong chuỗi: " + matcher.start());
         } else {
             System.out.println("Từ không xuất hiện trong chuỗi.");
         }
