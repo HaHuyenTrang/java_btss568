@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class bai6 {
     public static void main(String[] args) {
@@ -34,59 +36,38 @@ public class bai6 {
                                 inputString = scanner.nextLine();
                                 break;
                             case 2:
-                                String result = "";
-                                boolean spaceFound = false;
-
-                                for (int i = 0; i < inputString.length(); i++) {
-                                    char c = inputString.charAt(i);
-                                    if (c == ' ') {
-                                        if (!spaceFound) {
-                                            result += c;
-                                            spaceFound = true;
-                                        }
-                                    } else {
-                                        result += c;
-                                        spaceFound = false;
-                                    }
-                                }
-
-                                inputString = result.trim();
+                                inputString = inputString.replaceAll("\\s+", " ").trim();
                                 System.out.println("Chuỗi sau khi loại bỏ khoảng trắng: " + inputString);
                                 break;
                             case 3:
-                                int[] freq = new int[256];
-
-                                for (int i = 0; i < inputString.length(); i++) {
-                                    freq[inputString.charAt(i)]++;
-                                }
+                                String processedString = inputString; // Chuỗi dùng để xử lý
 
                                 System.out.println("Số lần xuất hiện của từng ký tự:");
-                                for (int i = 0; i < 256; i++) {
-                                    if (freq[i] > 0) {
-                                        System.out.println("'" + (char) i + "' xuất hiện " + freq[i] + " lần");
-                                    }
+                                while (!processedString.isEmpty()) {
+                                    char c = processedString.charAt(0); // Lấy ký tự đầu tiên
+                                    int count = processedString.length() - processedString.replaceAll(Pattern.quote(String.valueOf(c)), "").length();
+
+                                    System.out.println("'" + c + "' xuất hiện " + count + " lần");
+
+                                    // Loại bỏ tất cả các lần xuất hiện của ký tự đã đếm
+                                    processedString = processedString.replaceAll(Pattern.quote(String.valueOf(c)), "");
                                 }
+
                                 break;
                             case 4:
-                                String converted = "";
-                                boolean capitalize = true;
+                                // Dùng regex để viết hoa chữ cái đầu mỗi từ
+                                Pattern pattern = Pattern.compile("\\b[a-z]");
+                                Matcher matcher = pattern.matcher(inputString);
+                                StringBuffer converted = new StringBuffer();
 
-                                for (int i = 0; i < inputString.length(); i++) {
-                                    char c = inputString.charAt(i);
-                                    if (capitalize && Character.isLetter(c)) {
-                                        converted += Character.toUpperCase(c);
-                                        capitalize = false;
-                                    } else {
-                                        converted += Character.toLowerCase(c);
-                                    }
-                                    if (c == ' ') {
-                                        capitalize = true;
-                                    }
+                                while (matcher.find()) {
+                                    matcher.appendReplacement(converted, matcher.group().toUpperCase());
                                 }
+                                matcher.appendTail(converted);
 
-                                inputString = converted;
-                                System.out.println("Chuỗi sau khi chuyển đổi: " + inputString);
+                                System.out.println("Chuỗi sau khi chuyển đổi: " + converted.toString());
                                 break;
+
                         }
 
                     } while (stringChoice != 5);
